@@ -22,7 +22,7 @@ const createBox = document.createElement('div')
 const searchInputEl = document.getElementById('searchInput')
 
 async function idCounter() {
-  for (let i = 1; i <= 151; i++) {
+  for (let i = 1; i <= 905; i++) {
     await getPokemon(i)
   }
 }
