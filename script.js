@@ -23,21 +23,26 @@ const searchInputEl = document.getElementById('searchInput')
 
 async function idCounter() {
   for (let i = 1; i <= 151; i++) {
-    await apiUrl(i)
+    await getPokemon(i)
   }
 }
 
-function apiUrl(id) {
-  fetch(`https://pokeapi.co/api/v2/pokemon/${id}`)
+const getPokemon = async (id) => {
+  await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`)
     .then((res) => res.json())
     .then((data) => {
-      const img = data.sprites.other['official-artwork'].front_default
-      const name =
-        data.forms[0].name[0].toUpperCase() + data.forms[0].name.slice(1)
-      const type = data.types[0].type.name
-      const weight = data.weight
-      const createBox = document.createElement('div')
-      createBox.innerHTML += `
+      function createPokemonCard(data) {
+        const img = data.sprites.other['official-artwork'].front_default
+        const name =
+          data.forms[0].name[0].toUpperCase() + data.forms[0].name.slice(1)
+        const type = data.types[0].type.name
+        const weight = data.weight
+        const createBox = document.createElement('div')
+        createBox.classList.add('poke-box')
+        const color = colors[type]
+        createBox.style.backgroundColor = color
+
+        const pokeinnerHTML = `
        <div class="poke-box" id="poke-box">
         <img
           src="${img}"
@@ -51,9 +56,10 @@ function apiUrl(id) {
         </div>
       </div>
       `
-      createBox.style.backgroundColor = colors[type]
-      createBox.classList.add('poke-box')
-      pokemonContentEl.appendChild(createBox)
+        createBox.innerHTML = pokeinnerHTML
+        pokemonContentEl.appendChild(createBox)
+      }
+      createPokemonCard(data)
     })
 }
 
